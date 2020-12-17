@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="./js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/vue.js"></script>
+</head>
+<style>
+    #app{
+        width: 820px;
+        height: 400px;
+    }
+    #left{
+        padding-top: 20px;
+        padding-left: 20px;
+        width: 400px;
+        height: 400px;
+        float: left;
+    }
+    li{
+        margin-top: 8px;
+        font-size: 18px;
+    }
+    .headerImage{
+        width: 100px; height: 100px
+    }
+    .headerRight{
+        float: right; height: 80px; width: 260px; margin-left: 20px
+    }
+    #right{
+        padding-top: 20px;
+        padding-left: 20px;
+        width: 400px;
+        height: 400px;
+        float: right;
+     }
+
+</style>
+<body>
+    <div id="app">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">组织工作</a></li>
+            <li role="presentation"><a href="#">干部工作</a></li>
+        </ul>
+
+        <div id="left">
+            <div id="header">
+                <span><img :src="data1[0].imageurl" class="headerImage"></span>
+                <div class="headerRight">
+                    <h5>{{data1[0].title}}...</h5>
+                    <p>{{data1[0].content}}...</p>
+                    <a href="#">详细</a>
+                </div>
+                <hr>
+                <ul class="a">
+                    <li v-for="data in data1">{{data.title}}</li>
+
+                </ul>
+            </div>
+        </div>
+        <div id="right">
+            <div id="headerRight">
+                <span><img :src="data2[0].imageurl" class="headerImage"></span>
+                <div class="headerRight">
+                    <h5>{{data2[0].title}}...</h5>
+                    <p>{{data2[0].content}}...</p>
+                    <a href="#">详细</a>
+                </div>
+                <hr>
+                <ul class="a">
+                    <li v-for="data in data2">{{data.title}}</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!--<button type="button"  v-on:click="test">aaa</button>-->
+        <!--<h1>{{message}}</h1>-->
+        <!--<h1>{{user.name}}</h1>-->
+    </div>
+</body>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            user:{},
+            data1:[],
+            data2:[]
+        },
+        methods:{
+            test:function () {
+                $.ajax({
+                    url:"www.baidu.com",
+                    type:"POST",
+                    data:{name : "test"},
+                    success:function(result){
+                        vue.data1 = result;
+                    }
+                });
+            },
+            initDate1:function () {
+                $.ajax({
+                    url:"/queryNews",
+                    type:"GET",
+                    data:{type : "1"},
+                    success:function(result){
+                        console.log(result);
+                        vue.data1 = result;
+                    }
+                });
+            },
+            initDate2:function () {
+                $.ajax({
+                    url:"/queryNews",
+                    type:"GET",
+                    data:{type : "2"},
+                    success:function(result){
+                        console.log(result);
+                        vue.data2 = result;
+                    }
+                });
+            }
+        },
+        create:function () {
+            
+        },
+        mounted:function () {
+            this.initDate1();
+            this.initDate2()
+        }
+    })
+
+</script>
+</html>
